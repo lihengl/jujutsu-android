@@ -1,5 +1,6 @@
 package com.lihengl.jujutsu;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
     ListView lvItems;
+    final int REQUEST_CODE = 76;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,21 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            System.err.println("Unknown result code: " + resultCode);
+            return;
+        }
+        if (requestCode != REQUEST_CODE) {
+            System.err.println("Unknown request code: " + requestCode);
+            return;
+        }
+        items.set(data.getExtras().getInt("pos", -1), data.getExtras().getString("item"));
+        itemsAdapter.notifyDataSetChanged();
+        writeItems();
+    }
+
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
@@ -73,6 +90,15 @@ public class MainActivity extends ActionBarActivity {
                 itemsAdapter.notifyDataSetChanged();
                 writeItems();
                 return true;
+            }
+        });
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
+                Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
+                editIntent.putExtra("item", items.get(pos));
+                editIntent.putExtra("pos", pos);
+                startActivityForResult(editIntent, REQUEST_CODE);
             }
         });
     }
