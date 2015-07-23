@@ -5,3 +5,4 @@
 .DS_Store
 /build
 /captures
+app/libs/commons-io-2.4.jar
