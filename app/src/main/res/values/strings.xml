@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Jujutsu</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="add_item">Add Item</string>
+    <string name="app_name">Jujutsu</string>
+    <string name="edit_item_below">Edit item below</string>
+    <string name="enter_a_new_item">Enter a new item</string>
+    <string name="enter_the_item_text">Enter the item text</string>
     <string name="title_activity_edit">Edit Todo</string>
+    <string name="save">Save</string>
 </resources>
