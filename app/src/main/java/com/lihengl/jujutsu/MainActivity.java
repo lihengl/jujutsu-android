@@ -50,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
                     for (int i = 0; i < photosJSON.length(); i++) {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
                         InstagramPhoto photo = new InstagramPhoto();
+                        photo.createdTime = photoJSON.getString("created_time");
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
                         photo.imageUrl    = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         photo.username    = photoJSON.getJSONObject("user").getString("username");
