@@ -3,6 +3,7 @@ package com.lihengl.jujutsu;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
+import static java.lang.Long.*;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +32,13 @@ public class MainActivity extends ActionBarActivity {
 
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
+
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("dd/MM/yyyy", cal).toString();
+        return date;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +77,10 @@ public class MainActivity extends ActionBarActivity {
                     for (int i = 0; i < photosJSON.length(); i++) {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
                         InstagramPhoto photo = new InstagramPhoto();
-                        photo.createdTime = photoJSON.getString("created_time");
+                        photo.createdTime = getDate(1000 * parseLong(photoJSON.getString("created_time")));
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
                         photo.imageUrl    = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+                        photo.profileUrl  = photoJSON.getJSONObject("user").getString("profile_picture");
                         photo.username    = photoJSON.getJSONObject("user").getString("username");
                         photo.caption     = photoJSON.getJSONObject("caption").getString("text");
                         photo.likesCount  = photoJSON.getJSONObject("likes").getInt("count");
