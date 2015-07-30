@@ -1,6 +1,7 @@
 package com.lihengl.jujutsu;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
 
     public static final String CLIENT_ID = "a08d215934244b2dabe76962220287c9";
+
+    private SwipeRefreshLayout srPhotos;
+
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
 
@@ -28,10 +32,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         photos = new ArrayList<>();
         aPhotos = new InstagramPhotosAdapter(this, photos);
-        ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         lvPhotos.setAdapter(aPhotos);
+
+        srPhotos = (SwipeRefreshLayout) findViewById(R.id.srPhotos);
+        srPhotos.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPopularPhotos();
+            }
+        });
+
         fetchPopularPhotos();
     }
 
@@ -44,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray photosJSON = null;
+                aPhotos.clear();
 
                 try {
                     photosJSON = response.getJSONArray("data");
@@ -62,6 +77,7 @@ public class MainActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
 
+                srPhotos.setRefreshing(false);
                 aPhotos.notifyDataSetChanged();
             }
 
