@@ -3,8 +3,8 @@
     <string name="app_name">Jujutsu</string>
     <string name="enter_search_query">Enter Search Query</string>
     <string name="image_result">Image Result</string>
+    <string name="image_title">Image Title</string>
+    <string name="full_screen_view">Full Screen View</string>
     <string name="search">Search</string>
     <string name="title_activity_image_display">Full Image</string>
-
-    <string name="hello_world">Hello world!</string>
 </resources>

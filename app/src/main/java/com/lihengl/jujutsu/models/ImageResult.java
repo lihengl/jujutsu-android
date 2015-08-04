@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ImageResult implements Serializable {
-    private static final long serialVersionUID = 123;
+    private static final long serialVersionUID = -404559972763751944L;
 
     public String thumbUrl;
     public String fullUrl;

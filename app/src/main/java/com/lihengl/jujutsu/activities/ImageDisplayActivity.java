@@ -17,7 +17,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
 
-        getActionBar().hide();
+        this.getSupportActionBar().hide();
 
         ImageResult result = (ImageResult) getIntent().getSerializableExtra("result");
         ImageView ivImageResult = (ImageView) findViewById(R.id.ivImageResult);
