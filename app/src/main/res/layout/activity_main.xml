@@ -3,42 +3,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/rlQuery">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/etQuery"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:hint="@string/enter_search_query"
-            android:singleLine="true"
-            android:layout_alignParentBottom="false"
-            android:layout_alignBottom="@+id/btnSearch"
-            android:layout_toStartOf="@id/btnSearch" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:id="@+id/btnSearch"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="onImageSearch" />
-    </RelativeLayout>
-
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gvResults"
-        android:layout_below="@+id/rlQuery"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:numColumns="3"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+        android:horizontalSpacing="3dp"
+        android:verticalSpacing="3dp" />
 </RelativeLayout>

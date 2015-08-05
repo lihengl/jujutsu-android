@@ -1,18 +1,27 @@
 package com.lihengl.jujutsu.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 
 import com.lihengl.jujutsu.R;
 import com.lihengl.jujutsu.adapters.ImageResultsAdapter;
+import com.lihengl.jujutsu.dialogues.EditFilterDialogue;
+import com.lihengl.jujutsu.listeners.InfiniteScrollListener;
 import com.lihengl.jujutsu.models.ImageResult;
+import com.lihengl.jujutsu.models.SearchFilter;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -24,16 +33,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity implements EditFilterDialogue.FilterApplyListener {
 
-    private EditText etQuery;
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
+    private String queryText = "";
+    private SearchFilter searchFilter;
+
+    private String searchUrl(int start, SearchFilter filter) {
+        ArrayList<String> queryParams = new ArrayList<>();
+
+        queryParams.add(String.format("as_sitesearch=%s", filter.site));
+        queryParams.add(String.format("imgcolor=%s", filter.color));
+        queryParams.add(String.format("imgsize=%s", filter.size));
+        queryParams.add(String.format("imgtype=%s", filter.style));
+        queryParams.add(String.format("v=%s", "1.0"));
+        queryParams.add(String.format("q=%s", queryText));
+        queryParams.add(String.format("rsz=%d", 8));
+        queryParams.add(String.format("start=%d", start));
+
+        String apiEndpoint = "https://ajax.googleapis.com/ajax/services/search/images?";
+
+        return apiEndpoint + TextUtils.join("&", queryParams);
+    }
 
     private void setupViews() {
-        etQuery = (EditText) findViewById(R.id.etQuery);
-
         gvResults = (GridView) findViewById(R.id.gvResults);
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -44,56 +69,115 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+        gvResults.setOnScrollListener(new InfiniteScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadMoreImages(6);
+            }
+        });
+    }
+
+    private void startSearch() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(searchUrl(0, searchFilter), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONArray imageResultsJson = null;
+                try {
+                    imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                imageResults.clear();
+                aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("API", responseString, throwable);
+            }
+        });
+    }
+
+    private void loadMoreImages(int offset) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(searchUrl(offset, searchFilter), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONArray imageResultsJson = null;
+                try {
+                    imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("API", responseString, throwable);
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         setupViews();
+
+        searchFilter = new SearchFilter();
         imageResults = new ArrayList<>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
+
         gvResults.setAdapter(aImageResults);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queryText = query;
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), 0);
+
+                startSearch();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.filter_color) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            EditFilterDialogue dialogue = EditFilterDialogue.newInstance(searchFilter);
+            dialogue.show(fragmentManager, "Edit Filter");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void onImageSearch(View v) {
-        String query = etQuery.getText().toString();
-        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8";
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(searchUrl, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray imageResultsJson = null;
-                try {
-                    imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
-                    imageResults.clear();
-                    aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    @Override
+    public void onApplyFilter(SearchFilter filter) {
+        if (queryText == "") {
+            return;
+        }
+        startSearch();
     }
 }
