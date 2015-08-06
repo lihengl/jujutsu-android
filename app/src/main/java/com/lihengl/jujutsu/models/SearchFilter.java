@@ -1,19 +1,36 @@
 package com.lihengl.jujutsu.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SearchFilter implements Serializable {
     private static final long serialVersionUID = 8726708152513193182L;
 
-    public String color;
-    public String style;
-    public String size;
-    public String site;
+    private int selectedIndex;
+    private String title;
 
-    public SearchFilter() {
-        this.color = "";
-        this.style = "";
-        this.site = "";
-        this.size = "";
+    public String name;
+    public ArrayList<String> options;
+
+    public SearchFilter(String displayTitle, String queryName) {
+        this.name = queryName;
+        this.selectedIndex = 0;
+        this.title = displayTitle;
+
+        this.options = new ArrayList<>();
+        this.options.add("");
     }
+
+    public void select(int index) {
+        this.selectedIndex = index;
+    }
+
+    public String title() {
+        return this.title.substring(0, 1).toUpperCase() + this.title.substring(1).toLowerCase();
+    }
+
+    public String value() {
+        return this.options.get(this.selectedIndex);
+    }
+
 }

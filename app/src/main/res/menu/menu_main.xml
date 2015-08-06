@@ -7,12 +7,4 @@
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
-    <item android:id="@+id/filter_size" android:title="@string/size"
-        android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/filter_color" android:title="@string/color"
-        android:orderInCategory="101" app:showAsAction="never" />
-    <item android:id="@+id/filter_style" android:title="@string/style"
-        android:orderInCategory="102" app:showAsAction="never" />
-    <item android:id="@+id/filter_site" android:title="@string/site"
-        android:orderInCategory="103" app:showAsAction="never" />
 </menu>

@@ -5,9 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <Spinner android:id="@+id/sprFilter"
-        android:entries="@array/color_filters"
-        android:prompt="@string/color_prompt"
+    <Spinner android:id="@+id/sprOptions"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:dropDownWidth="fill_parent"

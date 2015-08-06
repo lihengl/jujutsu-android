@@ -37,25 +37,63 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
+    private ArrayList<SearchFilter> searchFilters;
     private ImageResultsAdapter aImageResults;
     private String queryText = "";
-    private SearchFilter searchFilter;
 
-    private String searchUrl(int start, SearchFilter filter) {
+    private String searchUrl(int start) {
         ArrayList<String> queryParams = new ArrayList<>();
 
-        queryParams.add(String.format("as_sitesearch=%s", filter.site));
-        queryParams.add(String.format("imgcolor=%s", filter.color));
-        queryParams.add(String.format("imgsize=%s", filter.size));
-        queryParams.add(String.format("imgtype=%s", filter.style));
         queryParams.add(String.format("v=%s", "1.0"));
         queryParams.add(String.format("q=%s", queryText));
         queryParams.add(String.format("rsz=%d", 8));
         queryParams.add(String.format("start=%d", start));
 
+        for (int i = 0; i < searchFilters.size(); i++) {
+            SearchFilter sf = searchFilters.get(i);
+            String queryParam = String.format("%s=%s", sf.name, sf.value());
+            queryParams.add(queryParam);
+        }
+
         String apiEndpoint = "https://ajax.googleapis.com/ajax/services/search/images?";
 
         return apiEndpoint + TextUtils.join("&", queryParams);
+    }
+
+    private void populateFilters() {
+        searchFilters = new ArrayList<>();
+
+        SearchFilter colorFilter = new SearchFilter("color", "imgcolor");
+        colorFilter.options.add("black");
+        colorFilter.options.add("blue");
+        colorFilter.options.add("brown");
+        colorFilter.options.add("gray");
+        colorFilter.options.add("green");
+        colorFilter.options.add("orange");
+        colorFilter.options.add("pink");
+        colorFilter.options.add("purple");
+        colorFilter.options.add("red");
+        colorFilter.options.add("teal");
+        colorFilter.options.add("white");
+        colorFilter.options.add("yellow");
+        searchFilters.add(colorFilter);
+
+        SearchFilter sizeFilter = new SearchFilter("size", "imgsize");
+        sizeFilter.options.add("icon");
+        sizeFilter.options.add("small");
+        sizeFilter.options.add("medium");
+        sizeFilter.options.add("large");
+        sizeFilter.options.add("xlarge");
+        sizeFilter.options.add("xxlarge");
+        sizeFilter.options.add("huge");
+        searchFilters.add(sizeFilter);
+
+        SearchFilter typeFilter = new SearchFilter("type", "imgtype");
+        typeFilter.options.add("face");
+        typeFilter.options.add("photo");
+        typeFilter.options.add("clipart");
+        typeFilter.options.add("lineart");
+        searchFilters.add(typeFilter);
     }
 
     private void setupViews() {
@@ -79,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
     private void startSearch() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(searchUrl(0, searchFilter), new JsonHttpResponseHandler() {
+        client.get(searchUrl(0), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray imageResultsJson = null;
@@ -100,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
     private void loadMoreImages(int offset) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(searchUrl(offset, searchFilter), new JsonHttpResponseHandler() {
+        client.get(searchUrl(offset), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray imageResultsJson = null;
@@ -123,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        populateFilters();
         setupViews();
 
-        searchFilter = new SearchFilter();
         imageResults = new ArrayList<>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
 
@@ -141,11 +179,9 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                queryText = query;
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), 0);
-
+                queryText = query;
                 startSearch();
                 return true;
             }
@@ -156,6 +192,14 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
             }
         });
 
+        for (int i = 0; i < searchFilters.size(); i++) {
+            SearchFilter filter = searchFilters.get(i);
+            String title = filter.title();
+            String value = (filter.value() == "") ? "all" : filter.value();
+            MenuItem item = menu.add(Menu.NONE, 100 + i, i, (title + ": " + value));
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -163,10 +207,11 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.filter_color) {
+        if (id >= 100 && id <= 100 + searchFilters.size()) {
+            SearchFilter sf = searchFilters.get(id - 100);
+            EditFilterDialogue dialogue = EditFilterDialogue.newInstance(sf);
             FragmentManager fragmentManager = getSupportFragmentManager();
-            EditFilterDialogue dialogue = EditFilterDialogue.newInstance(searchFilter);
-            dialogue.show(fragmentManager, "Edit Filter");
+            dialogue.show(fragmentManager, "Filter Editor");
             return true;
         }
 
