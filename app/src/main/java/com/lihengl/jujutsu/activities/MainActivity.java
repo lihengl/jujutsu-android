@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.lihengl.jujutsu.dialogues.EditFilterDialogue;
 import com.lihengl.jujutsu.listeners.InfiniteScrollListener;
 import com.lihengl.jujutsu.models.ImageResult;
 import com.lihengl.jujutsu.models.SearchFilter;
+import com.lihengl.jujutsu.utilities.StringUtility;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -172,10 +174,14 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -194,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
         for (int i = 0; i < searchFilters.size(); i++) {
             SearchFilter filter = searchFilters.get(i);
-            String title = filter.title();
+            String title = StringUtility.capicalize(filter.title);
             String value = (filter.value() == "") ? "all" : filter.value();
             MenuItem item = menu.add(Menu.NONE, 100 + i, i, (title + ": " + value));
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);

@@ -11,6 +11,7 @@ import android.widget.Spinner;
 
 import com.lihengl.jujutsu.R;
 import com.lihengl.jujutsu.models.SearchFilter;
+import com.lihengl.jujutsu.utilities.StringUtility;
 
 public class EditFilterDialogue extends DialogFragment implements View.OnClickListener {
 
@@ -40,7 +41,7 @@ public class EditFilterDialogue extends DialogFragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_filter_settings, container);
 
         SearchFilter filter = (SearchFilter) getArguments().getSerializable("filter");
-        getDialog().setTitle(filter.title() + " Filter");
+        getDialog().setTitle(StringUtility.capicalize(filter.title) + " Filter");
 
         Spinner sprOptions = (Spinner) view.findViewById(R.id.sprOptions);
         String[] options = filter.options.toArray(new String[filter.options.size()]);

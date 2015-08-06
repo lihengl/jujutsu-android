@@ -7,8 +7,8 @@ public class SearchFilter implements Serializable {
     private static final long serialVersionUID = 8726708152513193182L;
 
     private int selectedIndex;
-    private String title;
 
+    public String title;
     public String name;
     public ArrayList<String> options;
 
@@ -23,10 +23,6 @@ public class SearchFilter implements Serializable {
 
     public void select(int index) {
         this.selectedIndex = index;
-    }
-
-    public String title() {
-        return this.title.substring(0, 1).toUpperCase() + this.title.substring(1).toLowerCase();
     }
 
     public String value() {
