@@ -18,10 +18,13 @@ public class SearchFilter implements Serializable {
         this.title = displayTitle;
 
         this.options = new ArrayList<>();
-        this.options.add("");
+        this.options.add("all");
     }
 
     public void select(int index) {
+        if (index >= this.options.size()) {
+            throw new IndexOutOfBoundsException("Index " + index + " is larger then option count");
+        }
         this.selectedIndex = index;
     }
 

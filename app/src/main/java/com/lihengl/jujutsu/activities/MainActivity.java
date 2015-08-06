@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
         for (int i = 0; i < searchFilters.size(); i++) {
             SearchFilter sf = searchFilters.get(i);
-            String queryParam = String.format("%s=%s", sf.name, sf.value());
+            String filterValue = (sf.value() == "all") ? "" : sf.value();
+            String queryParam = String.format("%s=%s", sf.name, filterValue);
             queryParams.add(queryParam);
         }
 
@@ -96,6 +97,12 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
         typeFilter.options.add("clipart");
         typeFilter.options.add("lineart");
         searchFilters.add(typeFilter);
+
+        SearchFilter siteFilter = new SearchFilter("site", "as_sitesearch");
+        siteFilter.options.add("yahoo.com");
+        siteFilter.options.add("imgur.com");
+        siteFilter.options.add("espn.com");
+        searchFilters.add(siteFilter);
     }
 
     private void setupViews() {
@@ -201,8 +208,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
         for (int i = 0; i < searchFilters.size(); i++) {
             SearchFilter filter = searchFilters.get(i);
             String title = StringUtility.capicalize(filter.title);
-            String value = (filter.value() == "") ? "all" : filter.value();
-            MenuItem item = menu.add(Menu.NONE, 100 + i, i, (title + ": " + value));
+            MenuItem item = menu.add(Menu.NONE, 100 + i, i, (title + ": " + filter.value()));
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         }
 
@@ -225,7 +231,11 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
     }
 
     @Override
-    public void onApplyFilter(SearchFilter filter) {
+    public void onOptionSelected(SearchFilter filter, int index) {
+        if (filter.options.get(index) == filter.value()) {
+            return;
+        }
+        filter.select(index);
         if (queryText == "") {
             return;
         }
