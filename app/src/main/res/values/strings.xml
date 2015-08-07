@@ -1,16 +1,9 @@
 <resources>
     <string name="action_settings">Settings</string>
     <string name="app_name">Jujutsu</string>
-    <string name="color">Color</string>
-    <string name="color_prompt">Color Prompt</string>
     <string name="full_screen_view">Full Screen View</string>
     <string name="image_result">Image Result</string>
-    <string name="image_title">Image Title</string>
-    <string name="ok">Ok</string>
-    <string name="search">Search</string>
+    <string name="ok">OK</string>
     <string name="search_for_images">Search for images</string>
-    <string name="site">Site</string>
-    <string name="size">Size</string>
-    <string name="style">Style</string>
     <string name="title_activity_image_display">Full Image</string>
 </resources>

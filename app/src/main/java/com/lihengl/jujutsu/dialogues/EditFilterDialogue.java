@@ -45,7 +45,7 @@ public class EditFilterDialogue extends DialogFragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_filter_settings, container);
 
         final SearchFilter filter = (SearchFilter) getArguments().getSerializable("filter");
-        getDialog().setTitle(StringUtility.capicalize(filter.title) + " Filter");
+        getDialog().setTitle(StringUtility.capitalize(filter.title) + " Filter");
 
         Spinner sprOptions = (Spinner) view.findViewById(R.id.sprOptions);
         String[] options = filter.options.toArray(new String[filter.options.size()]);

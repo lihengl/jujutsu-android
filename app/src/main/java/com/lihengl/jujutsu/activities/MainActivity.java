@@ -43,6 +43,34 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
     private ImageResultsAdapter aImageResults;
     private String queryText = "";
 
+    private void populateFilters() {
+        searchFilters = new ArrayList<>();
+
+        SearchFilter colorFilter = new SearchFilter("color", "imgcolor");
+        for (String option : new String[]{"black", "blue", "brown", "gray", "green", "orange"}) {
+            colorFilter.options.add(option);
+        }
+        searchFilters.add(colorFilter);
+
+        SearchFilter sizeFilter = new SearchFilter("size", "imgsize");
+        for (String option : new String[]{"icon", "small", "medium", "large", "xlarge", "huge"}) {
+            sizeFilter.options.add(option);
+        }
+        searchFilters.add(sizeFilter);
+
+        SearchFilter typeFilter = new SearchFilter("type", "imgtype");
+        for (String option : new String[]{"face", "photo", "clipart", "lineart"}) {
+            typeFilter.options.add(option);
+        }
+        searchFilters.add(typeFilter);
+
+        SearchFilter siteFilter = new SearchFilter("site", "as_sitesearch");
+        for (String option : new String[]{"yahoo.com", "imgur.com", "espn.com"}) {
+            siteFilter.options.add(option);
+        }
+        searchFilters.add(siteFilter);
+    }
+
     private String searchUrl(int start) {
         ArrayList<String> queryParams = new ArrayList<>();
 
@@ -53,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
         for (int i = 0; i < searchFilters.size(); i++) {
             SearchFilter sf = searchFilters.get(i);
-            String filterValue = (sf.value() == "all") ? "" : sf.value();
+            String filterValue = (sf.value().equals("all")) ? "" : sf.value();
             String queryParam = String.format("%s=%s", sf.name, filterValue);
             queryParams.add(queryParam);
         }
@@ -61,48 +89,6 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
         String apiEndpoint = "https://ajax.googleapis.com/ajax/services/search/images?";
 
         return apiEndpoint + TextUtils.join("&", queryParams);
-    }
-
-    private void populateFilters() {
-        searchFilters = new ArrayList<>();
-
-        SearchFilter colorFilter = new SearchFilter("color", "imgcolor");
-        colorFilter.options.add("black");
-        colorFilter.options.add("blue");
-        colorFilter.options.add("brown");
-        colorFilter.options.add("gray");
-        colorFilter.options.add("green");
-        colorFilter.options.add("orange");
-        colorFilter.options.add("pink");
-        colorFilter.options.add("purple");
-        colorFilter.options.add("red");
-        colorFilter.options.add("teal");
-        colorFilter.options.add("white");
-        colorFilter.options.add("yellow");
-        searchFilters.add(colorFilter);
-
-        SearchFilter sizeFilter = new SearchFilter("size", "imgsize");
-        sizeFilter.options.add("icon");
-        sizeFilter.options.add("small");
-        sizeFilter.options.add("medium");
-        sizeFilter.options.add("large");
-        sizeFilter.options.add("xlarge");
-        sizeFilter.options.add("xxlarge");
-        sizeFilter.options.add("huge");
-        searchFilters.add(sizeFilter);
-
-        SearchFilter typeFilter = new SearchFilter("type", "imgtype");
-        typeFilter.options.add("face");
-        typeFilter.options.add("photo");
-        typeFilter.options.add("clipart");
-        typeFilter.options.add("lineart");
-        searchFilters.add(typeFilter);
-
-        SearchFilter siteFilter = new SearchFilter("site", "as_sitesearch");
-        siteFilter.options.add("yahoo.com");
-        siteFilter.options.add("imgur.com");
-        siteFilter.options.add("espn.com");
-        searchFilters.add(siteFilter);
     }
 
     private void setupViews() {
@@ -207,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
         for (int i = 0; i < searchFilters.size(); i++) {
             SearchFilter filter = searchFilters.get(i);
-            String title = StringUtility.capicalize(filter.title);
+            String title = StringUtility.capitalize(filter.title);
             MenuItem item = menu.add(Menu.NONE, 100 + i, i, (title + ": " + filter.value()));
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         }
@@ -232,11 +218,11 @@ public class MainActivity extends AppCompatActivity implements EditFilterDialogu
 
     @Override
     public void onOptionSelected(SearchFilter filter, int index) {
-        if (filter.options.get(index) == filter.value()) {
+        if (filter.options.get(index).equals(filter.value())) {
             return;
         }
         filter.select(index);
-        if (queryText == "") {
+        if (queryText.length() == 0) {
             return;
         }
         startSearch();
