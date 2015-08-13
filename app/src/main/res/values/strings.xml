@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Tweets</string>
-    <string name="login_label">Connect To Twitter</string>
-    <string name="title_activity_timeline">Home Timeline</string>
+    <string name="app_name">Tweet</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="connect_to_twitter">Connect To Twitter</string>
+    <string name="placeholder_screenname">lihengl</string>
+    <string name="placeholder_time">25m</string>
+    <string name="placeholder_tweet">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec purus in ante pretium blandit. Aliquam erat volutpat. Nulla libero lectus.</string>
+    <string name="placeholder_username">Li-Heng Liang</string>
+    <string name="tweet">Tweet</string>
+    <string name="home_timeline">Home Timeline</string>
 </resources>

@@ -28,10 +28,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+        TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+        TextView tvCreatedAt = (TextView) convertView.findViewById(R.id.tvCreatedAt);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
 
-        tvUsername.setText(tweet.getUser().getScreenName());
+        tvScreenName.setText("@" + tweet.getUser().getScreenName());
+        tvUsername.setText(tweet.getUser().getName());
+        tvCreatedAt.setText(tweet.getCreatedAt());
         tvBody.setText(tweet.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);

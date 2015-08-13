@@ -8,8 +8,8 @@
     android:paddingBottom="5dp">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/ivProfileImage"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -19,18 +19,47 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/tvUsername"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage" />
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:text="@string/placeholder_username"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="@string/placeholder_tweet"
         android:id="@+id/tvBody"
-        android:layout_alignBottom="@+id/ivProfileImage"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage" />
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:maxLines="3"
+        android:textSize="12sp"
+        android:layout_below="@+id/tvScreenName"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_screenname"
+        android:id="@+id/tvScreenName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tvUsername"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_marginLeft="5dp"
+        android:textSize="12sp"
+        android:textColor="@color/grey" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_time"
+        android:id="@+id/tvCreatedAt"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="12sp"
+        android:textColor="@color/grey" />
 </RelativeLayout>
