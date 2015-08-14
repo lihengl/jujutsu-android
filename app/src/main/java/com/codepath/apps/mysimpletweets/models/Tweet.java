@@ -32,21 +32,19 @@ public class Tweet implements Serializable {
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
 
-        String relativeDate = "";
+        String relativeTime;
 
         try {
-            long dateMillis = sf.parse(createdAt).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(
-                    dateMillis,
-                    System.currentTimeMillis(),
-                    DateUtils.SECOND_IN_MILLIS
-            ).toString();
-
+            long created = sf.parse(createdAt).getTime();
+            long current = System.currentTimeMillis();
+            long measure = DateUtils.SECOND_IN_MILLIS;
+            relativeTime = DateUtils.getRelativeTimeSpanString(created, current, measure).toString();
         } catch (ParseException e) {
             e.printStackTrace();
+            relativeTime = "";
         }
 
-        return relativeDate;
+        return relativeTime;
     }
 
     public long getId() {
