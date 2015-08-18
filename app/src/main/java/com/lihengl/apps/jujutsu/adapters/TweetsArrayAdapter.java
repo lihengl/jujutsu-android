@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.lihengl.apps.jujutsu.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.lihengl.apps.jujutsu.R;
+import com.lihengl.apps.jujutsu.models.Tweet;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

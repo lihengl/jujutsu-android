@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets.models;
+package com.lihengl.apps.jujutsu.models;
 
 import android.text.format.DateUtils;
 

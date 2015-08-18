@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.lihengl.apps.jujutsu;
 
 import android.content.Context;
 
@@ -20,6 +20,29 @@ public class TwitterClient extends OAuthBaseClient {
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
+
+	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 5);
+        client.get(apiUrl, params, handler);
+    }
+
+    public void getNewerMentions(long fromId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 1);
+        params.put("since_id", fromId);
+        client.get(apiUrl, params, handler);
+    }
+
+    public void getOlderMentions(long fromId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 1);
+        params.put("max_id", fromId);
+        client.get(apiUrl, params, handler);
+    }
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");

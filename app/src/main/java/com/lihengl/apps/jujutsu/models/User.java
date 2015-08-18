@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets.models;
+package com.lihengl.apps.jujutsu.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

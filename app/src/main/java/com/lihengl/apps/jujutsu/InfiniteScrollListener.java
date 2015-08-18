@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.lihengl.apps.jujutsu;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;

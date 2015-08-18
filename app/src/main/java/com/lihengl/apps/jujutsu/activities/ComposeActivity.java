@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets.activities;
+package com.lihengl.apps.jujutsu.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,15 +7,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TwitterApplication;
-import com.codepath.apps.mysimpletweets.TwitterClient;
-import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.lihengl.apps.jujutsu.R;
+import com.lihengl.apps.jujutsu.TwitterApplication;
+import com.lihengl.apps.jujutsu.TwitterClient;
+import com.lihengl.apps.jujutsu.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
