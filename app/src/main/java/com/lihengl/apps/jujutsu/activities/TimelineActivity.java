@@ -39,6 +39,9 @@ public class TimelineActivity extends ActionBarActivity {
         if (id == R.id.action_compose) {
             Intent i = new Intent(this, ComposeActivity.class);
             startActivityForResult(i, REQUEST_CODE);
+        } else if (id == R.id.miProfile) {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

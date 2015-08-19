@@ -1,5 +1,6 @@
 package com.lihengl.apps.jujutsu;
 
+import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
@@ -67,6 +68,19 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("max_id", fromId);
         client.get(apiUrl, params, handler);
     }
+
+	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getUserInfo(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		client.get(apiUrl, handler);
+	}
 
 	public void postTweet(String status, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");

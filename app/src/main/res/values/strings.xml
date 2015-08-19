@@ -9,4 +9,6 @@
     <string name="placeholder_username">Li-Heng Liang</string>
     <string name="tweet">Tweet</string>
     <string name="home_timeline">Home Timeline</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
