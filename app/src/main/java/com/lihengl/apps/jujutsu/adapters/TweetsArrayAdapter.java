@@ -1,6 +1,7 @@
 package com.lihengl.apps.jujutsu.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lihengl.apps.jujutsu.R;
+import com.lihengl.apps.jujutsu.activities.ProfileActivity;
 import com.lihengl.apps.jujutsu.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -29,17 +31,29 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-        TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
-        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
-        TextView tvCreatedAt = (TextView) convertView.findViewById(R.id.tvCreatedAt);
-        TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
-
-        tvScreenName.setText("@" + tweet.getUser().getScreenName());
-        tvUsername.setText(tweet.getUser().getName());
-        tvCreatedAt.setText(tweet.getCreatedAt());
-        tvBody.setText(tweet.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent);
+        ivProfileImage.setTag(tweet.getUser().getScreenName());
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra("screen_name", (String) v.getTag());
+                getContext().startActivity(i);
+            }
+        });
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+
+        TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
+        tvScreenName.setText("@" + tweet.getUser().getScreenName());
+
+        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+        tvUsername.setText(tweet.getUser().getName());
+
+        TextView tvCreatedAt = (TextView) convertView.findViewById(R.id.tvCreatedAt);
+        tvCreatedAt.setText(tweet.getCreatedAt());
+
+        TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
+        tvBody.setText(tweet.getBody());
 
         return convertView;
     }

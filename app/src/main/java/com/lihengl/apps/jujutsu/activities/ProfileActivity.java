@@ -24,6 +24,15 @@ public class ProfileActivity extends AppCompatActivity {
     TwitterClient client;
     User user;
 
+    private JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            user = User.fromJSON(response);
+            getSupportActionBar().setTitle("@" + user.getScreenName());
+            populateProfileHeader(user);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +41,12 @@ public class ProfileActivity extends AppCompatActivity {
         String screenName = getIntent().getStringExtra("screen_name");
 
         client = TwitterApplication.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                getSupportActionBar().setTitle("@" + user.getScreenName());
-                populateProfileHeader(user);
-            }
-        });
+
+        if (screenName == null) {
+            client.getSelfInfo(handler);
+        } else {
+            client.getUserInfo(screenName, handler);
+        }
 
         if (savedInstanceState == null) {
             UserTimelineFragment fragment = UserTimelineFragment.newInstance(screenName);
@@ -47,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
             ft.replace(R.id.flContainer, fragment);
             ft.commit();
         } else {
-            Log.i("INFO", "ProfileActivity.onCreate() has run before");
+            Log.i("INFO", "ProfileActivity.onCreate() has been run already");
         }
     }
 
