@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="twitter_dark" type="color">#FF3C84B4</item>
+    <item name="twitter_dark" type="color">#FF2D6697</item>
     <item name="twitter_default" type="color">#FF50ABF1</item>
     <item name="black" type="color">#FF333333</item>
     <item name="grey" type="color">#FFAAAAAA</item>

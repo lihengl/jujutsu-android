@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,6 +43,8 @@ public class TimelineActivity extends ActionBarActivity {
         } else if (id == R.id.miProfile) {
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
+        } else {
+            Log.i("INFO", "Unhandled menu item: " + id);
         }
 
         return super.onOptionsItemSelected(item);
