@@ -1,0 +1,9 @@
+/Users/lihengl/Jujutsu/android/app/build/intermediates/classes/debug
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/codepath-utils-2f2f7feb74e4c1fe2731d0a9b5d67bd12f373ad6.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/codepath-android-view-helpers-0.1.0-d21a049efdc2907ac7a8e404d5f6c00663fa2f5f.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/codepath-oauth-0.2.3-2cf87c7c220839e360b42649da72f09da7fe9135.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.3-fafe462fbbf0d65addbc3a2a83ce1bdd7c93b217.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/universal-image-loader-1.8.4-31bdd7c9a1ecd0664a7d8f6d5f0eb0a7ed427aad.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/scribe-88c6c4980dfaa7b3bb824531a679f1fbf6411d02.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/androidjhlabs-07b2a9ff3d6e6530afbc6475def2f883ee413ae4.jar
+/Users/lihengl/Jujutsu/android/app/build/intermediates/pre-dexed/debug/support-v4-18.0.0-1521e08a3bbf3439bfab7ea52475953c4c39ecf9.jar
